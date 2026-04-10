@@ -270,7 +270,7 @@ st.write("")
 
 e2_left, e2_right = st.columns([1, 4])
 with e2_left:
-    st.metric("SSC %", "70.73")
+    st.metric("SSC %", "70.03")
 with e2_right:
     st.subheader("Secondary School Certificate (SSC)")
     st.write("**P.V. Modi School** · Rajkot, Gujarat")
