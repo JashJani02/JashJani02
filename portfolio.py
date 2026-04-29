@@ -335,7 +335,7 @@ st.divider()
 st.markdown(
     "<p style='text-align:center;font-size:11px;color:#1e3a5a;"
     "font-family:IBM Plex Mono,monospace;letter-spacing:1px;padding:24px 0;'>"
-    "⌥ &nbsp;Jash Jani · 2025 &nbsp;·&nbsp; Built with Python &amp; Streamlit &nbsp;⌘"
+    "⌥ &nbsp;Jash Jani · 2026 &nbsp;·&nbsp; Built with Python &amp; Streamlit &nbsp;⌘"
     "</p>",
     unsafe_allow_html=True,
 )
