@@ -9,7 +9,7 @@ st.set_page_config(
 )
 
 # ── Load resume PDF ────────────────────────────────────────────────────────────
-_resume_path = Path(__file__).parent / "Jash_Jani_resume.pdf"  # updated resume
+_resume_path = Path(__file__).parent / "Jash_Jani_resume.pdf"
 _resume_bytes = _resume_path.read_bytes() if _resume_path.exists() else None
 
 # ── Minimal CSS: only bg, hide chrome, style native widgets ───────────────────
@@ -339,6 +339,3 @@ st.markdown(
     "</p>",
     unsafe_allow_html=True,
 )
-
-st.write(_resume_path)
-st.write(_resume_path.exists())
