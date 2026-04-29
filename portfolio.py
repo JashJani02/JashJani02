@@ -339,3 +339,6 @@ st.markdown(
     "</p>",
     unsafe_allow_html=True,
 )
+
+st.write(_resume_path)
+st.write(_resume_path.exists())
