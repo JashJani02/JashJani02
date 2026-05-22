@@ -1,6 +1,5 @@
 import streamlit as st
 from pathlib import Path
-from streamlit_js_eval import streamlit_js_eval
 
 # ── Page config ────────────────────────────────────────────────────────────────
 st.set_page_config(
@@ -14,13 +13,7 @@ st.set_page_config(
 _resume_path = Path(__file__).parent / "Jash_Jani_resume.pdf"
 _resume_bytes = _resume_path.read_bytes() if _resume_path.exists() else None
 
-# ── Detect screen width ────────────────────────────────────────────────────────
-screen_width = streamlit_js_eval(js_expressions="window.innerWidth", key="screen_width")
-if screen_width is None:
-    st.stop()
-is_mobile = screen_width < 768
-
-# ── Minimal CSS ────────────────────────────────────────────────────────────────
+# ── Minimal CSS: only bg, hide chrome, style native widgets ───────────────────
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Syne:wght@700;800&display=swap');
@@ -89,7 +82,7 @@ hr { border-color: #1a2030 !important; margin: 8px 0 !important; }
     border-color: #4d9fff55 !important;
     color: #4d9fff !important;
 }
-
+            /* Download button — matches link buttons but with solid blue accent */
 [data-testid="stDownloadButton"] > button {
     background: #0d1a2e !important;
     border: 1px solid #4d9fff55 !important;
@@ -165,6 +158,7 @@ def project_card(num: str, title: str, desc: str, tags: list, gh_url: str, live_
                 st.link_button("⬡ PyPI", pypi_url)
 
 
+
 # ══════════════════════════════════════════════════════════════════════════════
 # HERO
 # ══════════════════════════════════════════════════════════════════════════════
@@ -180,13 +174,14 @@ st.markdown(
     "<p style='font-size:13px;color:#5a7a9a;line-height:1.8;max-width:580px;"
     "font-family:IBM Plex Mono,monospace;margin-bottom:28px;'>"
     "Python-Backend Developer &amp; ICT Student @ Marwadi University.<br>"
-    "Building full-stack tools, AI platforms &amp; hardware-software systems."
+    "Building full-stack tools, AI platforms &amp; hardware-software systems.<br>"
+
     "</p>",
     unsafe_allow_html=True,
 )
 
 # Social / contact links
-h1, h2, h3, h4, h5, _ = st.columns([1, 1, 1, 1, 1, 0.3])
+h1, h2, h3, h4, h5, _ = st.columns([1, 1, 1, 1, 1, 0.5])
 with h1:
     st.link_button("⌥ GitHub", "https://github.com/JashJani02")
 with h2:
@@ -198,7 +193,7 @@ with h4:
 with h5:
     if _resume_bytes:
         st.download_button(
-            label="⤓ Resume",
+            label="⬇ Resume",
             data=_resume_bytes,
             file_name="Jash_Jani_resume.pdf",
             mime="application/pdf",
@@ -224,6 +219,7 @@ st.divider()
 # PROJECTS
 # ══════════════════════════════════════════════════════════════════════════════
 section_header("Projects")
+
 
 projects = [
     ("01","multimedia_downloader",
@@ -272,15 +268,11 @@ projects = [
      None),
 ]
 
-if is_mobile:
-    for num, title, desc, tags, gh, live, pypi in projects:
+col_a, col_b, col_c = st.columns(3)
+cols = [col_a, col_b, col_c]
+for i, (num, title, desc, tags, gh, live, pypi) in enumerate(projects):
+    with cols[i % 3]:
         project_card(num, title, desc, tags, gh, live, pypi)
-else:
-    col_a, col_b, col_c = st.columns(3)
-    cols = [col_a, col_b, col_c]
-    for i, (num, title, desc, tags, gh, live, pypi) in enumerate(projects):
-        with cols[i % 3]:
-            project_card(num, title, desc, tags, gh, live, pypi)
 
 st.write("")
 st.divider()
@@ -311,7 +303,6 @@ with e2_right:
 
 st.write("")
 st.divider()
-
 # ══════════════════════════════════════════════════════════════════════════════
 # CERTIFICATIONS & ACTIVITIES
 # ══════════════════════════════════════════════════════════════════════════════
@@ -368,7 +359,7 @@ st.divider()
 st.markdown(
     "<p style='text-align:center;font-size:11px;color:#1e3a5a;"
     "font-family:IBM Plex Mono,monospace;letter-spacing:1px;padding:24px 0;'>"
-    "⌥ &nbsp;Jash Jani · 2025 &nbsp;·&nbsp; Built with Python &amp; Streamlit &nbsp;⌘"
+    "⌥ &nbsp;Jash Jani · 2026 &nbsp;·&nbsp; Built with Python &amp; Streamlit &nbsp;⌘"
     "</p>",
     unsafe_allow_html=True,
 )
