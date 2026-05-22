@@ -1,5 +1,6 @@
 import streamlit as st
 from pathlib import Path
+from streamlit_js_eval import streamlit_js_eval
 
 # ── Page config ────────────────────────────────────────────────────────────────
 st.set_page_config(
@@ -13,7 +14,13 @@ st.set_page_config(
 _resume_path = Path(__file__).parent / "Jash_Jani_resume.pdf"
 _resume_bytes = _resume_path.read_bytes() if _resume_path.exists() else None
 
-# ── Minimal CSS: only bg, hide chrome, style native widgets ───────────────────
+# ── Detect screen width ────────────────────────────────────────────────────────
+screen_width = streamlit_js_eval(js_expressions="window.innerWidth", key="screen_width")
+if screen_width is None:
+    st.stop()
+is_mobile = screen_width < 768
+
+# ── Minimal CSS ────────────────────────────────────────────────────────────────
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Syne:wght@700;800&display=swap');
@@ -82,7 +89,7 @@ hr { border-color: #1a2030 !important; margin: 8px 0 !important; }
     border-color: #4d9fff55 !important;
     color: #4d9fff !important;
 }
-            /* Download button — matches link buttons but with solid blue accent */
+
 [data-testid="stDownloadButton"] > button {
     background: #0d1a2e !important;
     border: 1px solid #4d9fff55 !important;
@@ -100,9 +107,19 @@ hr { border-color: #1a2030 !important; margin: 8px 0 !important; }
 }
 
 [data-testid="stCaptionContainer"] p {
-    color: #4a6a8a !important;
+    color: #a0b8d0 !important;
     font-family: 'IBM Plex Mono', monospace !important;
     font-size: 12px !important;
+}
+
+/* Expander inner text — description and tags readable on dark bg */
+[data-testid="stExpander"] [data-testid="stCaptionContainer"] p {
+    color: #c8d6e5 !important;
+}
+[data-testid="stExpander"] p,
+[data-testid="stExpander"] div,
+[data-testid="stExpander"] span {
+    color: #eaf0f8 !important;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -132,12 +149,20 @@ def skill_row(category: str, skills: list):
     st.markdown("&nbsp;&nbsp;".join(f"`{s}`" for s in skills))
 
 
-def project_card(num: str, title: str, desc: str, tags: list, gh_url: str):
+def project_card(num: str, title: str, desc: str, tags: list, gh_url: str, live_url: str = None, pypi_url: str = None):
     with st.expander(f"{num}  {title}"):
         st.caption(desc)
         st.markdown("&nbsp;&nbsp;".join(f"`{t}`" for t in tags))
         st.write("")
-        st.link_button("→ View on GitHub", gh_url)
+        btn_cols = st.columns(3)
+        with btn_cols[0]:
+            st.link_button("→ GitHub", gh_url)
+        if live_url:
+            with btn_cols[1]:
+                st.link_button("⎋ Live Demo", live_url)
+        if pypi_url:
+            with btn_cols[2]:
+                st.link_button("⬡ PyPI", pypi_url)
 
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -155,14 +180,13 @@ st.markdown(
     "<p style='font-size:13px;color:#5a7a9a;line-height:1.8;max-width:580px;"
     "font-family:IBM Plex Mono,monospace;margin-bottom:28px;'>"
     "Python-Backend Developer &amp; ICT Student @ Marwadi University.<br>"
-    "Building full-stack tools, AI platforms &amp; hardware-software systems.<br>"
-
+    "Building full-stack tools, AI platforms &amp; hardware-software systems."
     "</p>",
     unsafe_allow_html=True,
 )
 
 # Social / contact links
-h1, h2, h3, h4, h5, _ = st.columns([1, 1, 1, 1, 1, 1])
+h1, h2, h3, h4, h5, _ = st.columns([1, 1, 1, 1, 1, 0.3])
 with h1:
     st.link_button("⌥ GitHub", "https://github.com/JashJani02")
 with h2:
@@ -174,7 +198,7 @@ with h4:
 with h5:
     if _resume_bytes:
         st.download_button(
-            label="⬇ Resume",
+            label="⤓ Resume",
             data=_resume_bytes,
             file_name="Jash_Jani_resume.pdf",
             mime="application/pdf",
@@ -201,54 +225,62 @@ st.divider()
 # ══════════════════════════════════════════════════════════════════════════════
 section_header("Projects")
 
-
 projects = [
-    ("01", "Medly-AI",
-     "AI-centric platform for medical data processing and intelligent response generation. "
-     "Backend handles async data requests and AI model outputs.",
-     ["Python", "API Integration", "AI/ML"], "https://github.com/JashJani02/Medly-AI"),
+    ("01","multimedia_downloader",
+     "Python library to download audio, video, and images from any social media platform. "
+     "Published on PyPI — installable with a single pip command.",
+     ["Python", "PyPI", "Open Source"],
+     "https://github.com/JashJani02/multimedia_downloader",
+     None,
+     "https://pypi.org/project/multimedia-downloader/"),
 
-    ("02", "CNC / PCB Plotter",
-     "Software stack for a low-cost CNC/PCB Plotter. Co-authored the official patent application — "
-     "demonstrating technical writing and IP expertise.",
-     ["Hardware", "Software Integration"], "https://github.com/JashJani02/3D-CNC-Plotter"),
+    ("02", "Medly-AI",
+     "Privacy-first medical AI platform powered by Ollama for fully local, on-device inference. "
+     "No API keys, no data leaving the machine. Handles async medical data processing and intelligent response generation.",
+     ["Python", "Ollama", "AI/ML", "Local LLM"],
+     "https://github.com/JashJani02/Medly-AI",
+     None, None),
 
-    ("03", "A-V Downloader",
+    ("03", "Mathematical Equation Visualizer",
+     "Interactive visualizer for mathematical equations and functions. "
+     "Renders plots in real-time from user-defined expressions with a clean Streamlit interface.",
+     ["Python", "Streamlit", "Plotly", "SymPy"],
+     "https://github.com/JashJani02/MEV",
+     "https://jash02-mev.streamlit.app/",
+     None),
+
+    ("04", "CNC / PCB Plotter",
+     "Software stack for a low-cost CNC/PCB Plotter. "
+     "Co-authored the official patent draft application — documentation withheld from public repo for IP and privacy reasons.",
+     ["Hardware", "Software Integration", "Patent Draft"],
+     "https://github.com/JashJani02/3D-CNC-Plotter",
+     None, None),
+
+    ("05", "A-V Downloader",
      "Web-based utility for high-quality media extraction using yt-dlp. "
-     "Integrates FFmpeg for real-time format conversion with server-side file handling.",
-     ["Python", "Flask", "Streamlit", "FFmpeg", "yt-dlp"], "https://github.com/JashJani02/A-V-Downloader"),
+     "Integrates FFmpeg for real-time format conversion. The core downloader logic later evolved into the multimedia_downloader PyPI library.",
+     ["Python", "Flask", "Streamlit", "FFmpeg", "yt-dlp"],
+     "https://github.com/JashJani02/A-V-Downloader",
+     None, None),
 
-    ("04", "Library Management System",
-     "Full-stack CRUD application for managing digital library inventories "
-     "built with Flask and a clean REST architecture.",
-     ["Python", "Flask", "CRUD", "SQLite"], "https://github.com/JashJani02/Library-Management-System"),
-
-    ("05", "Image Downloader",
+    ("06", "Image Downloader",
      "Script-based tool to automate bulk image retrieval and directory organisation "
-     "via web scraping, with a Streamlit UI.",
-     ["Python", "Streamlit", "Web Scraping"], "https://github.com/JashJani02/Image-downloader"),
-
-    ("06", "Music Player",
-     "Built a Django Powered Music Player able to stream audio."
-     "Transformed the audio downloader component into a Flask-based Microservice enabling the site to download to stream audio files in different formats.",
-     ["Python", "Django", "Flask"], "https://github.com/JashJani02/Music-Player"),
-    
-    ("07", "Grid-Generator Game",
-     "Interactive logic game using dynamic DOM manipulation and "
-     "algorithm-based grid rendering in pure JavaScript.",
-     ["JavaScript", "DOM", "Game Logic"], "https://github.com/JashJani02/Grid-Generator-game"),
-
-    ("08", "Python Concepts",
-     "Open-source beginner-friendly guide covering OOP, File Handling, and Data Structures. "
-     "Recognised by faculty as potential curriculum material.",
-     ["Python", "Jupyter", "Open Source", "Pedagogy"], "https://github.com/JashJani02/Basic-to-Intermediate-Python"),
+     "via web scraping, with a live Streamlit UI. The core downloader logic later evolved into the multimedia_downloader PyPI library",
+     ["Python", "Streamlit", "Web Scraping"],
+     "https://github.com/JashJani02/Image-downloader",
+     "https://jash02-image-downloader.streamlit.app/",
+     None),
 ]
 
-col_a, col_b, col_c = st.columns(3)
-cols = [col_a, col_b, col_c]
-for i, (num, title, desc, tags, url) in enumerate(projects):
-    with cols[i % 3]:
-        project_card(num, title, desc, tags, url)
+if is_mobile:
+    for num, title, desc, tags, gh, live, pypi in projects:
+        project_card(num, title, desc, tags, gh, live, pypi)
+else:
+    col_a, col_b, col_c = st.columns(3)
+    cols = [col_a, col_b, col_c]
+    for i, (num, title, desc, tags, gh, live, pypi) in enumerate(projects):
+        with cols[i % 3]:
+            project_card(num, title, desc, tags, gh, live, pypi)
 
 st.write("")
 st.divider()
@@ -260,18 +292,18 @@ section_header("Education")
 
 e1_left, e1_right = st.columns([1, 4])
 with e1_left:
-    st.metric("CGPA", "8.76")
-    st.caption("SGPA 8.23 · Current")
+    st.metric("CGPA", "8.67")
+    st.caption("SGPA 8.43 · Current")
 with e1_right:
     st.subheader("Diploma in Information & Communication Technology")
     st.write("**Marwadi University** · Rajkot, Gujarat")
-    st.caption("July 2024 – May 2027 · 2nd Year Student")
+    st.caption("July 2024 – May 2027 · 3rd Year Student")
 
 st.write("")
 
 e2_left, e2_right = st.columns([1, 4])
 with e2_left:
-    st.metric("SSC %", "70.03")
+    st.metric("SSC %", "77.03")
 with e2_right:
     st.subheader("Secondary School Certificate (SSC)")
     st.write("**P.V. Modi School** · Rajkot, Gujarat")
@@ -336,7 +368,7 @@ st.divider()
 st.markdown(
     "<p style='text-align:center;font-size:11px;color:#1e3a5a;"
     "font-family:IBM Plex Mono,monospace;letter-spacing:1px;padding:24px 0;'>"
-    "⌥ &nbsp;Jash Jani · 2026 &nbsp;·&nbsp; Built with Python &amp; Streamlit &nbsp;⌘"
+    "⌥ &nbsp;Jash Jani · 2025 &nbsp;·&nbsp; Built with Python &amp; Streamlit &nbsp;⌘"
     "</p>",
     unsafe_allow_html=True,
 )
