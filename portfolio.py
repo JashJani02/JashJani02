@@ -209,7 +209,7 @@ section_header("Technical Skills")
 
 skill_row("Languages",            ["Python", "Java", "C", "JavaScript", "R", "SQL", "Markdown"])
 skill_row("Frameworks & Backend", ["Streamlit", "Flask", "Django", "REST APIs", "SQLite", "FFmpeg"])
-skill_row("Data Science",         ["Pandas", "NumPy", "Matplotlib"])
+skill_row("Data Science",         ["Pandas", "NumPy", "Matplotlib", "Plotly"])
 skill_row("Tools & Platforms",    ["Git / GitHub", "VIM", "VS Code", "Jupyter Notebooks", "Arduino IDE", "Linux", "ComfyUI"])
 
 st.write("")
