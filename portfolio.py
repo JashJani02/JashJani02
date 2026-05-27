@@ -317,9 +317,11 @@ with cert_col:
         unsafe_allow_html=True,
     )
     for cert in [
-        "Cisco · Computer Hardware Basics",
+        "Cisco Networking Acedemy · Computer Hardware Basics",
         "Arduino Step-by-Step",
+        "Cisco Networking Acedemy · Networking Devices and Initial Configuration",
         "Learn Python by Coding: 10 Projects",
+        "Intro to AI Ethics",
         '"Code Storm" Annual Technical Fest',
         "Linux & Version Control Seminars",
     ]:
