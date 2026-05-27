@@ -185,7 +185,7 @@ h1, h2, h3, h4, h5, _ = st.columns([1, 1, 1, 1, 1, 0.5])
 with h1:
     st.link_button("⌥ GitHub", "https://github.com/JashJani02")
 with h2:
-    st.link_button("⌘ LinkedIn", "https://linkedin.com/in/jash~jani-58a49b322")
+    st.link_button("⌘ LinkedIn", "www.linkedin.com/in/jash-jani")
 with h3:
     st.link_button("✦ Dev.to", "https://dev.to/jash_jani_02")
 with h4:
