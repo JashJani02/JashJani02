@@ -143,7 +143,7 @@ def skill_row(category: str, skills: list):
 
 
 def project_card(num: str, title: str, desc: str, tags: list, gh_url: str, live_url: str = None, pypi_url: str = None):
-    with st.expander(f"{num}  {title}"):
+    with st.expander(f"{title}"):
         st.caption(desc)
         st.markdown("&nbsp;&nbsp;".join(f"`{t}`" for t in tags))
         st.write("")
@@ -289,7 +289,7 @@ with e1_left:
 with e1_right:
     st.subheader("Diploma in Information & Communication Technology")
     st.write("**Marwadi University** · Rajkot, Gujarat")
-    st.caption("July 2024 – May 2027 · 3rd Year Student")
+    st.caption("July 2024 - May 2027 · 3rd Year Student")
 
 st.write("")
 
