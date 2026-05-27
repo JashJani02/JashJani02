@@ -1,5 +1,5 @@
 # 💫 About Me:
-👋 Hi, I’m Jash Jani<br>👀 I’m interested in Full-Stack Dev and Back-end Development<br>🌱 I’m currently learning Java,Python<br>🤝 I’m looking to collaborate on ongoing and upcoming Projects<br><!--⚡ Fun fact: Self-Taught Python.-->
+👋 Hi, I’m Jash Jani<br>👀 I’m interested in Full-Stack Dev and Back-end Development<br>🌱 I’m currently learning Python<br>🤝 I’m looking to collaborate on ongoing and upcoming Projects<br>
 
 
 ## 🌐 Socials:
