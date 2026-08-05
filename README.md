@@ -11,8 +11,7 @@
 # 📊 GitHub Stats:
 [![GitHub Streak](https://streak-stats.demolab.com?user=JashJani02&theme=codeSTACKr&date_format=M%20j%5B%2C%20Y%5D&mode=weekly)](https://git.io/streak-stats)<br>
 [![Top Langs](https://github-stats-extended.vercel.app/api/top-langs/?username=JashJani02&theme=codeSTACKr&layout=compact&hide=G-code&hide_progress=false)](https://github.com/stats-organization/github-stats-extended)
-![](https://nirzak-streak-stats-extended.vercel.app/?user=JashJani02&theme=dark&hide_border=false)<br/>
-![](https://github-readme-stats-extended.vercel.app/api/top-langs/?username=JashJani02&theme=dark&hide_border=false&include_all_commits=true&count_private=true&layout=compact)
+
 
 ### ✍️ Random Dev Quote
 ![](https://quotes-github-readme.vercel.app/api?type=horizontal&theme=radical)
