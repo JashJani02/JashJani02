@@ -420,8 +420,8 @@ section_header("Education")
 
 e1_left, e1_right = st.columns([1, 4])
 with e1_left:
-    st.metric("CGPA", "8.67")
-    st.caption("SGPA 8.43 · Current")
+    st.metric("CGPA", "8.63")
+    st.caption("SGPA 8.48 · Current")
 with e1_right:
     st.subheader("Diploma in Information & Communication Technology")
     st.write("**Marwadi University** · Rajkot, Gujarat")
